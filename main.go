@@ -5,6 +5,8 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+
+	"github.com/tacheraSasi/tripwire/utils"
 )
 
 // MoveBin moves a binary file to a systemwide bin directory.
@@ -58,7 +60,19 @@ func main() {
 
 	// Check if the destination file already exists
 	if _, err := os.Stat(destPath); err == nil {
+
 		fmt.Fprintf(os.Stderr, "Error: file already exists at %s\n", destPath)
+		if utils.AskForConfirmation("Do you want to overwrite it?") {
+			if err := os.Remove(destPath); err != nil {
+				fmt.Fprintf(os.Stderr, "Error removing existing file: %v\n", err)
+				os.Exit(1)
+			}
+			fmt.Println("Overwriting existing file...")
+			
+			
+		} else {
+			fmt.Println("Cancelled")
+		}
 		os.Exit(1)
 	}
 
