@@ -65,6 +65,7 @@ func main() {
 		if utils.AskForConfirmation("Do you want to overwrite it?") {
 			if err := os.Remove(destPath); err != nil {
 				fmt.Fprintf(os.Stderr, "Error removing existing file: %v\n", err)
+				fmt.Fprintf(os.Stderr, "Hint: If you're getting a permission denied error, try running with sudo: sudo %s %s\n", os.Args[0], os.Args[1])
 				os.Exit(1)
 			}
 			fmt.Println("Overwriting existing file...")
